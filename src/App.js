@@ -8,7 +8,7 @@ function App() {
     <div className="App">
       <Canvas>
         <Suspense fallback={null}>
-          <ambientLight intensity={0.5} />
+          <ambientLight intensity={1} />
           <pointLight intensity={1} position={[10, 10, 10]} />
           <Room />
         </Suspense>
