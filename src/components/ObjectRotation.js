@@ -1,7 +1,6 @@
-// Box.js
 import React, { useRef, useState } from "react";
 
-export function ArrowBox({ position, onClick, color }) {
+export function ObjectRotation({ position, onClick, color }) {
   const [hovered, setHovered] = useState(false);
   const boxRef = useRef();
 
