@@ -1,7 +1,6 @@
-// Box.js
 import React, { useRef, useState } from "react";
 
-export function ObjectMovement({ position, onClick, color }) {
+export function RotationButton({ size, position, onClick, color }) {
   const [hovered, setHovered] = useState(false);
   const boxRef = useRef();
 
@@ -13,7 +12,7 @@ export function ObjectMovement({ position, onClick, color }) {
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
     >
-      <boxGeometry args={[0.2, 0.2, 0.2]} />
+      <boxGeometry args={[size, size, size]} />
       <meshStandardMaterial color={hovered ? "green" : color} />
     </mesh>
   );
