@@ -1,5 +1,5 @@
 // Room.js
-import React, { Suspense } from "react";
+import React from "react";
 import Floor from "./Floor";
 import Wall from "./Wall";
 import { OrbitControls } from "@react-three/drei";

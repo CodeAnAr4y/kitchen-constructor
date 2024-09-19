@@ -5,9 +5,9 @@ import { RotationButton } from "./RotationButton";
 import { useObjectControls } from "../hooks/useObjectControls";
 import { useLoader } from "@react-three/fiber";
 
-export default function MovableObject({ size = [1, 1, 1] }) {
+export default function MovableObject({ id, activeObjectId, setActiveObjectId, size = [1, 1, 1] }) {
     const { meshRef, objectRef, moveObject, rotateObject } = useObjectControls();
-    const [showBoxes, setShowBoxes] = useState(false);
+    // const [showBoxes, setShowBoxes] = useState();
 
     const boxTexture = useLoader(THREE.TextureLoader, "box.jpg");
 
@@ -17,9 +17,11 @@ export default function MovableObject({ size = [1, 1, 1] }) {
     const maxObjectSize = Math.max(...size);
     const minObjectSize = Math.min(...size);
     const buttonSizes = minObjectSize * 0.5;
-    const objectFloorPosition = size[1]/2;
+    const objectFloorPosition = size[1] / 2;
 
-    const toggleBoxes = () => setShowBoxes(!showBoxes);
+    const toggleActiveObject = () => {
+        id === activeObjectId ? setActiveObjectId(0) : setActiveObjectId(id);
+    };
 
     const handleMoveClick = (e, direction, offset) => {
         e.stopPropagation();
@@ -32,13 +34,13 @@ export default function MovableObject({ size = [1, 1, 1] }) {
     };
 
     return (
-        <group ref={meshRef} onClick={toggleBoxes} position={[0, objectFloorPosition, 0]}>
+        <group ref={meshRef} onClick={toggleActiveObject} position={[0, objectFloorPosition, 0]}>
             <mesh ref={objectRef}>
                 <boxGeometry args={size} />
                 <meshStandardMaterial map={boxTexture} />
             </mesh>
 
-            {showBoxes && (
+            {id === activeObjectId && (
                 <>
                     <MovementButton
                         size={buttonSizes}

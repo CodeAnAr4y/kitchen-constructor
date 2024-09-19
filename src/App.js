@@ -11,11 +11,15 @@ function App() {
     const [height, setHeight] = useState(3);
     const [depth, setDepth] = useState(6);
 
+    const [activeObject, setActiveObject] = useState(0);
+
     const [movableObjects, setMovableObjects] = useState([]);
 
     const addMovableObject = () => {
         startTransition(() => {
-            setMovableObjects([...movableObjects, { id: Date.now(), size: [0.5, 0.5, 0.5] }]);
+          const id = Date.now();
+            setMovableObjects([...movableObjects, { id: id, size: [0.5, 0.5, 0.5] }]);
+            setActiveObject(id);
         });
     };
 
@@ -52,7 +56,7 @@ function App() {
                 <Suspense fallback={null}>
                     <Room roomSize={[width, height, depth]} />
                     {movableObjects.map((obj) => (
-                        <MovableObject key={obj.id} size={obj.size} />
+                        <MovableObject id={obj.id} activeObjectId={activeObject} setActiveObjectId={setActiveObject} key={obj.id} size={obj.size} />
                     ))}
                 </Suspense>
             </Canvas>
