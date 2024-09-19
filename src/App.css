@@ -4,6 +4,3 @@
   height: 100vh;
   color: white;
 }
-input[type="range"] {
-  width: 300px; /* Устанавливает ширину ползунка */
-}

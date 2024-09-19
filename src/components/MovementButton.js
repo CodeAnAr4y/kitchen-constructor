@@ -1,4 +1,3 @@
-// Box.js
 import React, { useRef, useState } from "react";
 
 export function MovementButton({ size, position, onClick, color }) {

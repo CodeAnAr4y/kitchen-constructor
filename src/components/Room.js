@@ -1,10 +1,8 @@
-// Room.js
 import React from "react";
 import Floor from "./Floor";
 import Wall from "./Wall";
-import { OrbitControls } from "@react-three/drei";
 
-export default function Room({ roomSize = [1, 1, 1] }) {
+export default function Room({ roomSize = [1, 1, 1], controlsEnabled }) {
     const [width, height, depth] = roomSize;
     return (
         <>
@@ -15,7 +13,6 @@ export default function Room({ roomSize = [1, 1, 1] }) {
             <Wall size={[width, height]} position={[0, height / 2, depth / 2]} rotation={[0, Math.PI, 0]} />
             <Wall size={[depth, height]} position={[-(width / 2), height / 2, 0]} rotation={[0, Math.PI / 2, 0]} />
             <Wall size={[depth, height]} position={[width / 2, height / 2, 0]} rotation={[0, -Math.PI / 2, 0]} />
-            <OrbitControls />
         </>
     );
 }
