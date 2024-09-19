@@ -23,6 +23,14 @@ function App() {
         });
     };
 
+    const removeMovableObject = (id) => {
+      setMovableObjects(movableObjects.filter((obj) => obj.id !== id));
+      // Reset activeObject if the removed object was active
+      if (activeObject === id) {
+          setActiveObject(0); // Or set it to another id if needed
+      }
+  };
+
     const updateMovableObjectSize = (id, newSize) => {
         setMovableObjects(movableObjects.map((obj) => (obj.id === id ? { ...obj, size: newSize } : obj)));
     };
@@ -43,12 +51,14 @@ function App() {
 
             {/* MovableObject constructors */}
             {movableObjects.map((obj) => (
-                <MovableObjectConstructor
-                    key={obj.id}
-                    id={obj.id}
-                    size={obj.size}
-                    onSizeChange={(newSize) => updateMovableObjectSize(obj.id, newSize)}
-                />
+                <div key={obj.id} style={{ display: 'flex', alignItems: 'center' }}>
+                    <MovableObjectConstructor
+                        id={obj.id}
+                        size={obj.size}
+                        onSizeChange={(newSize) => updateMovableObjectSize(obj.id, newSize)}
+                    />
+                    <button onClick={() => removeMovableObject(obj.id)}>Удалить объект</button>
+                </div>
             ))}
 
             {/* Canvas with Room and MovableObjects */}
