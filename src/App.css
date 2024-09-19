@@ -4,3 +4,10 @@
   height: 100vh;
   color: white;
 }
+
+.menu{
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}

@@ -1,41 +1,45 @@
 import React, { useState, useRef } from "react";
 import * as THREE from "three";
-import { useThree } from "@react-three/fiber";
 import { useDrag } from "@use-gesture/react";
+import { useLoader } from "@react-three/fiber";
 
-export default function MovableObject({ id, size, position, activeObjectId, setActiveObjectId, setIsDragging }) {
+export default function MovableObject({ id, size, position, activeObjectId, setActiveObjectId, setIsDragging, roomSize }) {
     const [pos, setPos] = useState(position);
-    const { size: viewportSize, viewport } = useThree();
-    const aspect = viewportSize.width / viewport.width;
+
+    const objectTexture = useLoader(THREE.TextureLoader, "box.jpg");
 
     const dragObjectRef = useRef();
     const floorPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
     let planeIntersectPoint = new THREE.Vector3();
 
+    const [roomWidth, roomHeight, roomDepth] = roomSize;
+
     // Перетаскивание объекта
     const bind = useDrag(({ active, event }) => {
-        if (active) {
+        if (active && activeObjectId === id) {
             event.ray.intersectPlane(floorPlane, planeIntersectPoint);
-            setPos([planeIntersectPoint.x, size[1] / 2, planeIntersectPoint.z]);
+            const newX = Math.max(-roomWidth / 2 + size[0] / 2, Math.min(planeIntersectPoint.x, roomWidth / 2 - size[0] / 2));
+            const newZ = Math.max(-roomDepth / 2 + size[2] / 2, Math.min(planeIntersectPoint.z, roomDepth / 2 - size[2] / 2));
+            setPos([newX, size[1] / 2, newZ]);
         }
         setIsDragging(active);
     }, { delay: true });
 
-    // Включение активного объекта
-    const toggleActiveObject = () => {
-        setActiveObjectId(id === activeObjectId ? 0 : id);
+    const handleonClick = (event) => {
+        if (event.button === 0) {
+            setActiveObjectId(id);
+        }
     };
 
     return (
         <group
             ref={dragObjectRef}
             position={pos}
-            onClick={toggleActiveObject}
             {...bind()}
         >
-            <mesh>
+            <mesh onClick={handleonClick}>
                 <boxGeometry args={size} />
-                <meshStandardMaterial color={id === activeObjectId ? "green" : "gray"} />
+                <meshStandardMaterial map={objectTexture} color={id === activeObjectId ? "#64ff5e" : "white"} />
             </mesh>
         </group>
     );

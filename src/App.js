@@ -32,29 +32,33 @@ function App() {
         setMovableObjects(movableObjects.map((obj) => (obj.id === id ? { ...obj, size: newSize } : obj)));
     };
 
+    const activeMovableObject = movableObjects.find((obj) => obj.id === activeObject);
+
     return (
         <div className="App">
-            <button onClick={addMovableObject}>Добавить объект</button>
+            <div className="menu">
+                <button onClick={addMovableObject}>Добавить объект</button>
 
-            <RoomConstructor
-                width={width}
-                height={height}
-                depth={depth}
-                setWidth={setWidth}
-                setHeight={setHeight}
-                setDepth={setDepth}
-            />
+                <RoomConstructor
+                    width={width}
+                    height={height}
+                    depth={depth}
+                    setWidth={setWidth}
+                    setHeight={setHeight}
+                    setDepth={setDepth}
+                />
 
-            {movableObjects.map((obj) => (
-                <div key={obj.id} style={{ display: 'flex', alignItems: 'center' }}>
-                    <MovableObjectConstructor
-                        id={obj.id}
-                        size={obj.size}
-                        onSizeChange={(newSize) => updateMovableObjectSize(obj.id, newSize)}
-                    />
-                    <button onClick={() => removeMovableObject(obj.id)}>Удалить объект</button>
-                </div>
-            ))}
+                {activeMovableObject && (
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                        <MovableObjectConstructor
+                            id={activeMovableObject.id}
+                            size={activeMovableObject.size}
+                            onSizeChange={(newSize) => updateMovableObjectSize(activeMovableObject.id, newSize)}
+                        />
+                        <button onClick={() => removeMovableObject(activeMovableObject.id)}>Удалить объект</button>
+                    </div>
+                )}
+            </div>
 
             <Canvas camera={{ fov: 40, position: [4, 4, 4] }}>
                 <ambientLight intensity={1} />
@@ -71,6 +75,7 @@ function App() {
                         activeObjectId={activeObject}
                         setActiveObjectId={setActiveObject}
                         setIsDragging={setIsDragging}
+                        roomSize={[width, height, depth]} // Pass the room size
                     />
                 ))}
 
