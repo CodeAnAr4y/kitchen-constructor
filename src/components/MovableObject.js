@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useRef } from "react";
 import * as THREE from "three";
 import { useDrag } from "@use-gesture/react";

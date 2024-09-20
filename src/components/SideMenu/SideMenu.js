@@ -1,7 +1,7 @@
 import React from "react";
 import "./SideMenu.css";
-import RoomConstructor from "../RoomConstructor";
-import MovableObjectConstructor from "../MovableObjectConstructor";
+import RoomMenu from "../RoomMenu";
+import MovableObjectMenu from "../MovableObjectMenu";
 
 export default function SideMenu({
     activeTab,
@@ -56,7 +56,7 @@ export default function SideMenu({
                     <>
                         {activeMovableObject && (
                             <>
-                                <MovableObjectConstructor
+                                <MovableObjectMenu
                                     id={activeMovableObject.id}
                                     size={activeMovableObject.size}
                                     onSizeChange={(newSize) => updateMovableObjectSize(activeMovableObject.id, newSize)}
@@ -77,7 +77,7 @@ export default function SideMenu({
 
                 {/* Отображение конструктора комнаты при активной вкладке "Room" */}
                 {activeTab === "room" && (
-                    <RoomConstructor
+                    <RoomMenu
                         room={room}
                         onRoomUpdate={(newRoom)=>updateRoom(newRoom)}
                     />

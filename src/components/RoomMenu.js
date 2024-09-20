@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function RoomConstructor({ room, onRoomUpdate }) {
+export default function RoomMenu({ room, onRoomUpdate }) {
     return (
         <>
             <div>Размер Комнаты</div>

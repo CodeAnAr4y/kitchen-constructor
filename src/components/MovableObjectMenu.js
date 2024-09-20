@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function MovableObjectConstructor({id, size, onSizeChange }) {
+export default function MovableObjectMenu({id, size, onSizeChange }) {
     const [width, height, depth] = size;
     return (
         <div>
