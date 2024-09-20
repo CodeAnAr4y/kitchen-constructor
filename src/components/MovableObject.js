@@ -1,12 +1,10 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import * as THREE from "three";
 import { useDrag } from "@use-gesture/react";
 import { useLoader } from "@react-three/fiber";
 
-export default function MovableObject({ id, size, position, activeObjectId, setActiveObjectId, setIsDragging, roomSize }) {
-    const [pos, setPos] = useState(position);
-
+export default function MovableObject({ id, size, position, activeObjectId, setActiveObjectId, setIsDragging, updatePosition, roomSize }) {
     const objectTexture = useLoader(THREE.TextureLoader, "box.jpg");
 
     const dragObjectRef = useRef();
@@ -15,13 +13,12 @@ export default function MovableObject({ id, size, position, activeObjectId, setA
 
     const [roomWidth, roomHeight, roomDepth] = roomSize;
 
-    // Перетаскивание объекта
     const bind = useDrag(({ active, event }) => {
         if (active && activeObjectId === id) {
             event.ray.intersectPlane(floorPlane, planeIntersectPoint);
             const newX = Math.max(-roomWidth / 2 + size[0] / 2, Math.min(planeIntersectPoint.x, roomWidth / 2 - size[0] / 2));
             const newZ = Math.max(-roomDepth / 2 + size[2] / 2, Math.min(planeIntersectPoint.z, roomDepth / 2 - size[2] / 2));
-            setPos([newX, size[1] / 2, newZ]);
+            updatePosition(id, [newX, size[1] / 2, newZ]);
         }
         setIsDragging(active);
     }, { delay: true });
@@ -36,10 +33,10 @@ export default function MovableObject({ id, size, position, activeObjectId, setA
     return (
         <group
             ref={dragObjectRef}
-            position={pos}
+            position={position}
             {...bind()}
         >
-            <mesh onClick={(e)=>handleOnClick(e)}>
+            <mesh onClick={handleOnClick}>
                 <boxGeometry args={size} />
                 <meshStandardMaterial map={objectTexture} color={id === activeObjectId ? "#64ff5e" : "white"} />
             </mesh>
