@@ -25,7 +25,8 @@ export default function MovableObject({ id, size, position, activeObjectId, setA
         setIsDragging(active);
     }, { delay: true });
 
-    const handleonClick = (event) => {
+    const handleOnClick = (event) => {
+        event.stopPropagation();
         if (event.button === 0) {
             setActiveObjectId(id);
         }
@@ -37,7 +38,7 @@ export default function MovableObject({ id, size, position, activeObjectId, setA
             position={pos}
             {...bind()}
         >
-            <mesh onClick={handleonClick}>
+            <mesh onClick={(e)=>handleOnClick(e)}>
                 <boxGeometry args={size} />
                 <meshStandardMaterial map={objectTexture} color={id === activeObjectId ? "#64ff5e" : "white"} />
             </mesh>

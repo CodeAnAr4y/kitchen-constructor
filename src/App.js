@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import Room from "./components/Room";
-import RoomConstructor from "./components/RoomConstructor";
 import MovableObject from "./components/MovableObject";
-import MovableObjectConstructor from "./components/MovableObjectConstructor";
 import { OrbitControls } from "@react-three/drei";
 import "./App.css";
+import SideMenu from "./components/SideMenu/SideMenu";
 
 function App() {
     const [width, setWidth] = useState(6);
@@ -36,29 +35,18 @@ function App() {
 
     return (
         <div className="App">
-            <div className="menu">
-                <button onClick={addMovableObject}>Добавить объект</button>
-
-                <RoomConstructor
+                <SideMenu
                     width={width}
                     height={height}
                     depth={depth}
                     setWidth={setWidth}
                     setHeight={setHeight}
                     setDepth={setDepth}
+                    addMovableObject={addMovableObject}
+                    activeMovableObject={activeMovableObject}
+                    updateMovableObjectSize={updateMovableObjectSize}
+                    removeMovableObject={removeMovableObject}
                 />
-
-                {activeMovableObject && (
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                        <MovableObjectConstructor
-                            id={activeMovableObject.id}
-                            size={activeMovableObject.size}
-                            onSizeChange={(newSize) => updateMovableObjectSize(activeMovableObject.id, newSize)}
-                        />
-                        <button onClick={() => removeMovableObject(activeMovableObject.id)}>Удалить объект</button>
-                    </div>
-                )}
-            </div>
 
             <Canvas camera={{ fov: 40, position: [4, 4, 4] }}>
                 <ambientLight intensity={1} />
