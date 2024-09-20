@@ -1,21 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import "./SideMenu.css";
 import RoomConstructor from "../RoomConstructor";
 import MovableObjectConstructor from "../MovableObjectConstructor";
 
 export default function SideMenu({
-    width,
-    height,
-    depth,
-    setWidth,
-    setHeight,
-    setDepth,
+    activeTab,
+    setActiveTab,
+    room,
+    updateRoom,
     addMovableObject,
     activeMovableObject,
     updateMovableObjectSize,
     removeMovableObject,
 }) {
-    const [activeTab, setActiveTab] = useState(null);
 
     function tabClickHandler(tabName) {
         if (activeTab === tabName) {
@@ -81,12 +78,8 @@ export default function SideMenu({
                 {/* Отображение конструктора комнаты при активной вкладке "Room" */}
                 {activeTab === "room" && (
                     <RoomConstructor
-                        width={width}
-                        height={height}
-                        depth={depth}
-                        setWidth={setWidth}
-                        setHeight={setHeight}
-                        setDepth={setDepth}
+                        room={room}
+                        onRoomUpdate={(newRoom)=>updateRoom(newRoom)}
                     />
                 )}
             </div>

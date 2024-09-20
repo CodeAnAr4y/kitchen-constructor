@@ -2,8 +2,8 @@ import React from "react";
 import Floor from "./Floor";
 import Wall from "./Wall";
 
-export default function Room({ roomSize = [1, 1, 1], controlsEnabled }) {
-    const [width, height, depth] = roomSize;
+export default function Room({ roomParams }) {
+    const [width, height, depth] = [roomParams.width, roomParams.height, roomParams.depth];
     return (
         <>
             <ambientLight intensity={1} />
