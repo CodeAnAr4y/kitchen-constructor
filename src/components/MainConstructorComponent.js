@@ -17,14 +17,14 @@ export default function MainConstructorComponent() {
     const onSwitchActiveObject = (id) => {
         setActiveTab("movable");
         setActiveObject(id);
-    }
+    };
 
     const updateRoom = (newRoomParams) => {
         const newRoom = { ...room };
         const paramKeys = Object.keys(newRoomParams);
-        paramKeys.forEach((param) => newRoom[param] = newRoomParams[param]);
+        paramKeys.forEach((param) => (newRoom[param] = newRoomParams[param]));
         setRoom(newRoom);
-    }
+    };
 
     const addMovableObject = () => {
         const id = Date.now();
@@ -40,31 +40,47 @@ export default function MainConstructorComponent() {
     };
 
     const updateMovableObjectSize = (id, newSize) => {
-        setMovableObjects(movableObjects.map((obj) => {
-            if (obj.id === id) {
-                // Обновляем позицию по оси Y (если высота меняется)
-                const newY = Math.max(newSize[1] / 2, 0);  // Пол должен оставаться на уровне 0
+        setMovableObjects(
+            movableObjects.map((obj) => {
+                if (obj.id === id) {
+                    // Обновляем позицию по оси Y (если высота меняется)
+                    const newY = Math.max(newSize[1] / 2, 0);
 
-                // Проверка, чтобы объект оставался в пределах комнаты
-                const newX = Math.max(-room.width / 2 + newSize[0] / 2, Math.min(obj.position[0], room.width / 2 - newSize[0] / 2));
-                const newZ = Math.max(-room.depth / 2 + newSize[2] / 2, Math.min(obj.position[2], room.depth / 2 - newSize[2] / 2));
+                    // Проверка, чтобы объект оставался в пределах комнаты
+                    const newX = Math.max(
+                        -room.width / 2 + newSize[0] / 2,
+                        Math.min(obj.position[0], room.width / 2 - newSize[0] / 2)
+                    );
+                    const newZ = Math.max(
+                        -room.depth / 2 + newSize[2] / 2,
+                        Math.min(obj.position[2], room.depth / 2 - newSize[2] / 2)
+                    );
 
-                return { ...obj, size: newSize, position: [newX, newY, newZ] };
-            }
-            return obj;
-        }));
+                    return { ...obj, size: newSize, position: [newX, newY, newZ] };
+                }
+                return obj;
+            })
+        );
     };
 
-    const updatePosition = (id, newPosition) => {
-        setMovableObjects(movableObjects.map((obj) => {
-            if (obj.id === id) {
-                // Проверка границ для позиции по X и Z
-                const newX = Math.max(-room.width / 2 + obj.size[0] / 2, Math.min(newPosition[0], room.width / 2 - obj.size[0] / 2));
-                const newZ = Math.max(-room.depth / 2 + obj.size[2] / 2, Math.min(newPosition[2], room.depth / 2 - obj.size[2] / 2));
-                return { ...obj, position: [newX, obj.position[1], newZ] };
-            }
-            return obj;
-        }));
+    const updateMovableObjectPosition = (id, newPosition) => {
+        setMovableObjects(
+            movableObjects.map((obj) => {
+                if (obj.id === id) {
+                    // Проверка границ для позиции по X и Z
+                    const newX = Math.max(
+                        -room.width / 2 + obj.size[0] / 2,
+                        Math.min(newPosition[0], room.width / 2 - obj.size[0] / 2)
+                    );
+                    const newZ = Math.max(
+                        -room.depth / 2 + obj.size[2] / 2,
+                        Math.min(newPosition[2], room.depth / 2 - obj.size[2] / 2)
+                    );
+                    return { ...obj, position: [newX, obj.position[1], newZ] };
+                }
+                return obj;
+            })
+        );
     };
 
     const activeMovableObject = movableObjects.find((obj) => obj.id === activeObject);
@@ -98,7 +114,7 @@ export default function MainConstructorComponent() {
                         setActiveObjectId={onSwitchActiveObject}
                         setIsDragging={setIsDragging}
                         roomSize={[room.width, room.height, room.depth]}
-                        updatePosition={updatePosition}
+                        updatePosition={updateMovableObjectPosition}
                     />
                 ))}
 
